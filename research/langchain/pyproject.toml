@@ -1,0 +1,25 @@
+# Poetry configuration for a Python virtual environment.
+# Author: Andrew Jarombek
+# Date: 11/2/2023
+
+[tool.poetry]
+name = "python-programming"
+version = "0.1.0"
+description = "AI Picture Book LangChain Research"
+authors = ["Andrew Jarombek <andrew@jarombek.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+openai = "0.28.1"
+langchain = "0.0.329"
+
+[tool.poetry.dev-dependencies]
+black = "23.10.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+skip-string-normalization = true
+target-version = ["py311"]
