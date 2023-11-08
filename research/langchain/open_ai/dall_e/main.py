@@ -1,3 +1,4 @@
+import requests
 from langchain.utilities.dalle_image_generator import DallEAPIWrapper
 from langchain.llms import OpenAI
 from langchain.prompts import PromptTemplate
@@ -14,3 +15,12 @@ if __name__ == '__main__':
     chain = LLMChain(llm=llm, prompt=prompt)
     image_url = DallEAPIWrapper().run(chain.run("Stuffed animal horse galloping through a field"))
     print(image_url)
+
+    response = requests.get(image_url)
+
+    if response.status_code == 200:
+        with open("horse.png", "wb") as f:
+            f.write(response.content)
+        print("Image saved to 'horse.png'")
+    else:
+        print(f"Failed to download image. Status code: {response.status_code}")

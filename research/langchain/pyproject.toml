@@ -10,8 +10,9 @@ authors = ["Andrew Jarombek <andrew@jarombek.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.11"
-openai = "0.28.1"
 langchain = "0.0.329"
+openai = "0.28.1"
+requests = "2.31.0"
 
 [tool.poetry.dev-dependencies]
 black = "23.10.1"
