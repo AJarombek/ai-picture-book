@@ -1,5 +1,5 @@
 from fastapi.testclient import TestClient
-from main import app
+from ai_picture_book.main import app
 import pytest
 
 
