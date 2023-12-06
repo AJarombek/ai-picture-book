@@ -10,7 +10,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -33,8 +32,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
   Future<String> fetchData() async {
     final response = await http.get(Uri.parse('http://localhost:8000/'));
     if (response.statusCode == 200) {
@@ -42,12 +39,6 @@ class _MyHomePageState extends State<MyHomePage> {
     } else {
       throw Exception('Failed to load data');
     }
-  }
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
   }
 
   @override
@@ -69,12 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
             }
             return const CircularProgressIndicator();
           }
-        )
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+        ),
       ),
     );
   }
