@@ -8,4 +8,4 @@ check-outdated:
 	flutter pub outdated
 
 run:
-	flutter run
+	flutter run -d chrome --web-port=8080
