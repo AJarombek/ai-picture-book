@@ -7,3 +7,6 @@ lint-python:
 
 spell_check:
 	cd research/langchain && poetry run codespell --toml pyproject.toml
+
+format-python: 
+	cd research/langchain && poetry run ruff format
