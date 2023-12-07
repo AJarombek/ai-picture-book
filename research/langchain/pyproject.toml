@@ -10,13 +10,16 @@ authors = ["Andrew Jarombek <andrew@jarombek.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.11"
-langchain = "0.0.329"
+langchain = "~0.0.329"
 openai = "0.28.1"
 requests = "2.31.0"
 python-dotenv = "^1.0.0"
+langchain-cli = "^0.0.19"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 black = "23.10.1"
+ruff = "^0.1.7"
+codespell = "^2.2.6"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -25,3 +28,57 @@ build-backend = "poetry.core.masonry.api"
 [tool.black]
 skip-string-normalization = true
 target-version = ["py311"]
+
+[tool.ruff]
+extend-exclude = [
+    "docs/*",
+    # External to the project's coding standards
+    "tests/**/fixtures/*",
+]
+fix = true
+line-length = 88
+src = ["src"]
+target-version = "py38"
+
+[tool.ruff.lint]
+unfixable = [
+    "ERA", # do not autoremove commented out code
+]
+extend-select = [
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "ERA", # flake8-eradicate/eradicate
+    "I",   # isort
+    "N",   # pep8-naming
+    "PIE", # flake8-pie
+    "PGH", # pygrep
+    "RUF", # ruff checks
+    "SIM", # flake8-simplify
+    "TCH", # flake8-type-checking
+    "TID", # flake8-tidy-imports
+    "UP",  # pyupgrade
+]
+ignore = [
+    "B904", # use 'raise ... from err'
+    "B905", # use explicit 'strict=' parameter with 'zip()'
+    "N818", #  Exception name should be named with an Error suffix
+]
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[tool.ruff.lint.isort]
+force-single-line = true
+lines-between-types = 1
+lines-after-imports = 2
+known-first-party = ["poetry"]
+known-third-party = ["poetry.core"]
+
+[tool.codespell]
+skip = '.git,*.pdf,*.svg,*.pdf,*.yaml,*.ipynb,poetry.lock,*.min.js,*.css,package-lock.json,example_data,_dist,examples,templates'
+# Ignore latin etc
+ignore-regex = '.*(Stati Uniti|Tense=Pres).*'
+# whats is a typo but used frequently in queries so kept as is
+# aapply - async apply
+# unsecure - typo but part of API, decided to not bother for now
+ignore-words-list = 'momento,collison,ned,foor,reworkd,parth,whats,aapply,mysogyny,unsecure,damon,crate,aadd,symbl,precesses,accademia,nin'

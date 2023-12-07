@@ -1,13 +1,17 @@
 import os
 
 from langchain.chat_models import ChatOpenAI
-from langchain.schema import SystemMessage, HumanMessage, BaseMessage
+from langchain.schema import BaseMessage
+from langchain.schema import HumanMessage
+from langchain.schema import SystemMessage
+
 
 HELLO = "Bonjour!  Je m'appelle Andy.  Je suis un professeur de français."
 EXIT = "sortie"
 BYE = "Salut!"
 
 from dotenv import load_dotenv
+
 
 OPENAI_MODEL = "gpt-3.5-turbo"
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")

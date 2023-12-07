@@ -1,8 +1,10 @@
 import requests
-from langchain.utilities.dalle_image_generator import DallEAPIWrapper
+
+from langchain.chains import LLMChain
 from langchain.llms import OpenAI
 from langchain.prompts import PromptTemplate
-from langchain.chains import LLMChain
+from langchain.utilities.dalle_image_generator import DallEAPIWrapper
+
 
 if __name__ == '__main__':
     # Requires an OpenAI API key in the 'OPENAI_API_KEY' environment variable to run
