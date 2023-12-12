@@ -1,4 +1,4 @@
-name: Python Linting
+name: Python Code Analysis
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  pylint:
+  python_code_analysis:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
