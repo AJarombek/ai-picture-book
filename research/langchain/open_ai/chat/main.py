@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from langchain.chat_models import ChatOpenAI
 from langchain.schema import BaseMessage, HumanMessage, SystemMessage
 
+
 HELLO = "Bonjour!  Je m'appelle Andy.  Je suis un professeur de français."
 EXIT = "sortie"
 BYE = "Salut!"
