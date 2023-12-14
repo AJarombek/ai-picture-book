@@ -16,12 +16,12 @@ def test_read_root(client: TestClient):
 
 def test_chat_endpoint_valid_input(client: TestClient):
     user_input = "Hello"
-    response = client.get(f"/chat?user_input={user_input}")
+    response = client.get(f"/echo?user_input={user_input}")
     assert response.status_code == 200
     assert response.text == 'data: Hello\n\n'
 
 
 def test_chat_endpoint_empty_input(client: TestClient):
-    response = client.get("/chat?user_input=")
+    response = client.get("/echo?user_input=")
     assert response.status_code == 400
     assert response.json() == {"detail": "user_input cannot be empty"}
