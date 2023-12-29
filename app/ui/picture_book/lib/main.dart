@@ -1,6 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:picture_book/ping.dart';
@@ -9,35 +8,44 @@ void main() {
   runApp(const MyApp());
 }
 
+final _router = GoRouter(
+  routes: [
+    GoRoute(
+      path: '/',
+      builder: (context, state) => const Home(title: 'AI Picture Book'),
+    ),
+    GoRoute(
+      path: '/ping',
+      builder: (context, state) => const Ping(),
+    ),
+  ],
+);
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'AI Picture Book',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const MyHomePage(title: 'AI Picture Book'),
-        '/ping': (context) => const Ping(),
-      },
+      routerConfig: _router,
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class Home extends StatefulWidget {
+  const Home({super.key, required this.title});
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<Home> createState() => _HomeState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _HomeState extends State<Home> {
   final TextEditingController _controller = TextEditingController();
   String _responseText = '';
   bool _isLoading = false;
@@ -48,7 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
 
     final response = await http.get(
-      Uri.parse('http://localhost:8000/echo?user_input=hi'),
+      Uri.parse('http://localhost:8000/generate?user_input=${_controller.text}'),
     );
 
     if (response.statusCode == 200) {
