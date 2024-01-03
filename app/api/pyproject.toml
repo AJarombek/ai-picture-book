@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "ai-picture-book-api"
+name = "ai_picture_book"
 version = "0.1.0"
 description = "AI Picture Book API"
 authors = ["Andrew Jarombek <andrew@jarombek.com>"]
