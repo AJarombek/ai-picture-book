@@ -7,7 +7,9 @@ name = "python-programming"
 version = "0.1.0"
 description = "AI Picture Book LangChain Research"
 authors = ["Andrew Jarombek <andrew@jarombek.com>"]
-
+packages = [
+    { include = "open_ai" }
+]
 [tool.poetry.dependencies]
 python = "^3.11"
 langchain = "~0.0.329"
