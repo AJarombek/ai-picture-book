@@ -11,8 +11,9 @@ from langchain_core.messages import SystemMessage, HumanMessage, BaseMessage
 load_dotenv()
 app = FastAPI()
 
-OPENAI_MODEL = "gpt-3.5-turbo"
-OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+OPENAI_MODEL = os.getenv("OPENAI_MODEL","LLaMA_CPP")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "local")
+OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL", "http://localhost:8080/v1")
 
 origins = ["http://localhost:8080"]
 
@@ -30,7 +31,11 @@ async def generate_response_stream(user_input: str):
 
 
 async def openai_response_stream(user_input: str):
-    chat = ChatOpenAI(openai_api_key=OPENAI_API_KEY, model_name=OPENAI_MODEL)
+    chat = ChatOpenAI(
+        base_url=OPENAI_BASE_URL,
+        api_key = OPENAI_API_KEY,
+        model_name=OPENAI_MODEL
+    )
 
     messages = [
         SystemMessage(content="You are creating text for a picture book given a user's input."),
