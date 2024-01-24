@@ -3,7 +3,7 @@
 # Date: 11/2/2023
 
 [tool.poetry]
-name = "python-programming"
+name = "langchain-research"
 version = "0.1.0"
 description = "AI Picture Book LangChain Research"
 authors = ["Andrew Jarombek <andrew@jarombek.com>"]

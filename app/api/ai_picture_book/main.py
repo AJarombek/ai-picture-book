@@ -1,3 +1,4 @@
+import inspect
 import os
 import logging
 
@@ -5,8 +6,9 @@ from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
-from langchain.chat_models import ChatOpenAI
+from langchain_openai import ChatOpenAI
 from langchain_core.messages import SystemMessage, HumanMessage, BaseMessage
+from openai import OpenAI
 
 load_dotenv()
 app = FastAPI()
@@ -29,7 +31,7 @@ async def generate_response_stream(user_input: str):
     yield "data: {}\n\n".format(user_input)
 
 
-async def openai_response_stream(user_input: str):
+async def openai_langchain_response_stream(user_input: str):
     chat = ChatOpenAI(openai_api_key=OPENAI_API_KEY, model_name=OPENAI_MODEL)
 
     messages = [
@@ -39,9 +41,40 @@ async def openai_response_stream(user_input: str):
         HumanMessage(content=user_input),
     ]
 
-    response: BaseMessage = chat(messages)
+    response: BaseMessage = chat.invoke(messages)
     logging.info(response.content)
     yield "data: {}\n\n".format(response.content)
+
+
+async def openai_response_stream(user_input: str):
+    open_ai_client = OpenAI(api_key=OPENAI_API_KEY)
+
+    stream = open_ai_client.chat.completions.create(
+        model=OPENAI_MODEL,
+        messages=[
+            {
+                "role": "user",
+                "content": inspect.cleandoc(
+                    f"""
+                    Prompt:
+                    You are creating text for a picture book given a user's input.  
+                    The picture book should be anywhere from 10 to 30 pages long.
+                    You should properly delineate the end of each page.
+                    
+                    User Input:
+                    {user_input}
+                    """
+                )
+            }
+        ],
+        stream=True,
+    )
+
+    for chunk in stream:
+        content = chunk.choices[0].delta.content
+        if content is not None:
+            logging.info(content)
+            yield "data: {}\n\n".format(content)
 
 
 @app.get("/")
@@ -61,7 +94,13 @@ async def chat_endpoint(request: Request, user_input: str):
 # The endpoint should return a StreamingResponse response with the generated text.
 @app.get("/generate")
 async def generate_endpoint(request: Request, user_input: str):
+    headers = {
+        "Cache-Control": "no-cache",
+        "Connection": "keep-alive",
+        "Content-Type": "text/event-stream",
+    }
+
     if user_input == "":
         raise HTTPException(status_code=400, detail="user_input cannot be empty")
 
-    return StreamingResponse(openai_response_stream(user_input), media_type="text/event-stream")
+    return StreamingResponse(openai_response_stream(user_input), headers=headers)

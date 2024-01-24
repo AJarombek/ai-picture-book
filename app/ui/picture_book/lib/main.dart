@@ -1,7 +1,10 @@
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:eventflux/eventflux.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:picture_book/ping.dart';
 
 void main() {
@@ -47,29 +50,44 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final TextEditingController _controller = TextEditingController();
-  String _responseText = '';
+  final StreamController<String> _streamController = StreamController<String>();
+  late http.Client client;
+  late http.Response response;
   bool _isLoading = false;
+  String _fullMessage = '';
+
+  @override
+  void initState() {
+    super.initState();
+    client = http.Client();
+  }
 
   void _sendDataToServer() async {
     setState(() {
       _isLoading = true;
+      _fullMessage = '';
     });
 
-    final response = await http.get(
-      Uri.parse('http://localhost:8000/generate?user_input=${_controller.text}'),
+    EventFlux.instance.connect(
+      EventFluxConnectionType.get,
+      'http://localhost:8000/generate?user_input=${_controller.text}',
+      onSuccessCallback: (EventFluxResponse? response) {
+        response?.stream?.listen((data) {
+          setState(() {
+            _fullMessage += data.data;
+          });
+          _streamController.add(_fullMessage);
+        });
+      },
+      onError: (error) {
+        _streamController.addError('Error: ${error.message}');
+      },
+      autoReconnect: false,
     );
 
-    if (response.statusCode == 200) {
-      setState(() {
-        _responseText = response.body;
-        _isLoading = false;
-      });
-    } else {
-      setState(() {
-        _responseText = 'Error: ${response.statusCode}';
-        _isLoading = false;
-      });
-    }
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -96,21 +114,36 @@ class _HomeState extends State<Home> {
               onPressed: _isLoading ? null : _sendDataToServer,
               child: const Text('Send'),
             ),
-            const SizedBox(height: 20.0),
-            _isLoading ?
-            SpinKitCircle(
-              color: Theme.of(context).colorScheme.primary,
-              size: 50.0,
-            )
-            :
             Expanded(
-              child: Center(
-                child: Text(_responseText),
+              child: StreamBuilder<String>(
+                stream: _streamController.stream,
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text('Error: ${snapshot.error}'),
+                    );
+                  }
+
+                  if (!snapshot.hasData) {
+                    return const SizedBox.shrink();
+                  }
+
+                  return Center(
+                    child: Text(snapshot.data ?? ''),
+                  );
+                },
               ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    client.close();
+    _streamController.close();
+    super.dispose();
   }
 }
