@@ -74,7 +74,7 @@ class _HomeState extends State<Home> {
       onSuccessCallback: (EventFluxResponse? response) {
         response?.stream?.listen((data) {
           setState(() {
-            _fullMessage += removeLastNewlines(data.data);
+            _fullMessage += transformString(data.data);
           });
           _streamController.add(_fullMessage);
         });

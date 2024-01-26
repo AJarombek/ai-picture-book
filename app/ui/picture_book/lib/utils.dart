@@ -1,11 +1,18 @@
-String removeLastNewlines(String input) {
-  if (input.length >= 2 && input.endsWith('\n')) {
-    return input.substring(0, input.length - 1);
-  }
+String transformString(String input) {
+  // Remove newline characters
+  String withoutNewlines = input.replaceAll('\n', '');
 
-  if (input.length >= 3 && input.endsWith('\n\n')) {
-    return input.substring(0, input.length - 2);
-  }
+  // Remove all whitespace
+  String withoutWhitespace = withoutNewlines.replaceAll(' ', '');
 
-  return input;
+  // Fix end of sentences
+  String properEndOfSentence = withoutWhitespace.replaceAll('.', '.  ');
+
+  // Replace underscore (_) with whitespace
+  String withoutUnderscore = properEndOfSentence.replaceAll('_', ' ');
+
+  // Replace pipe (|) with two newline characters
+  String finalResult = withoutUnderscore.replaceAll('|', '\n\n');
+
+  return finalResult;
 }
