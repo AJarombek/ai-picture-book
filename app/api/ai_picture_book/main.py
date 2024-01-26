@@ -59,7 +59,14 @@ async def openai_response_stream(user_input: str):
                     Prompt:
                     You are creating text for a picture book given a user's input.  
                     The picture book should be anywhere from 10 to 30 pages long.
-                    You should properly delineate the end of each page.
+                    
+                    The end of each page should be delineated with a special | character.
+                    Whitespace between words should be delineated with a special _ character.
+                    
+                    Sample output (do not copy):
+                    
+                    Once_upon_a_time,_there_was_a_curious_cat_named_Whiskers.|Whiskers_loved_to_explore|
+                    One_sunny_day,_Whiskers_was_strolling_in_the_park.
                     
                     User Input:
                     {user_input}

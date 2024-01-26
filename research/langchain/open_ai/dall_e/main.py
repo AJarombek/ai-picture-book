@@ -1,17 +1,16 @@
 import os
 
 from dotenv import load_dotenv
+from langchain.chains import LLMChain
+from langchain.prompts import PromptTemplate
+from langchain_community.utilities.dalle_image_generator import DallEAPIWrapper
+from langchain_openai import OpenAI
+import requests
 
 OPENAI_MODEL = "gpt-3.5-turbo"
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 
 load_dotenv()
-
-import requests
-from langchain.chains import LLMChain
-from langchain.prompts import PromptTemplate
-from langchain_community.utilities.dalle_image_generator import DallEAPIWrapper
-from langchain_openai import OpenAI
 
 if __name__ == "__main__":
     # Requires an OpenAI API key in the 'OPENAI_API_KEY' environment variable to run

@@ -1,11 +1,11 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:eventflux/eventflux.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:picture_book/ping.dart';
+import 'package:picture_book/utils.dart';
 
 void main() {
   runApp(const MyApp());
@@ -74,7 +74,7 @@ class _HomeState extends State<Home> {
       onSuccessCallback: (EventFluxResponse? response) {
         response?.stream?.listen((data) {
           setState(() {
-            _fullMessage += data.data;
+            _fullMessage += transformString(data.data);
           });
           _streamController.add(_fullMessage);
         });
