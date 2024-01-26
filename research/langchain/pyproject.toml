@@ -12,14 +12,18 @@ packages = [
 ]
 [tool.poetry.dependencies]
 python = "^3.11"
-langchain = "~0.0.329"
-openai = "0.28.1"
-requests = "2.31.0"
+langchain = "^0.1.0"
+langchain-core = "^0.1.10"
+langchain-community = "^0.0.13"
+langchain-cli = "^0.0.20"
+langchain-openai = "0.0.2"
+openai = "^1.7.2"
+requests = "^2.31.0"
 python-dotenv = "^1.0.0"
-langchain-cli = "^0.0.19"
+
 
 [tool.poetry.group.dev.dependencies]
-black = "23.10.1"
+black = "^23.10.1"
 ruff = "^0.1.7"
 codespell = "^2.2.6"
 

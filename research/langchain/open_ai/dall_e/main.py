@@ -1,15 +1,22 @@
+import os
+
+from dotenv import load_dotenv
+
+OPENAI_MODEL = "gpt-3.5-turbo"
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+
+load_dotenv()
+
 import requests
-
 from langchain.chains import LLMChain
-from langchain.llms import OpenAI
 from langchain.prompts import PromptTemplate
-from langchain.utilities.dalle_image_generator import DallEAPIWrapper
-
+from langchain_community.utilities.dalle_image_generator import DallEAPIWrapper
+from langchain_openai import OpenAI
 
 if __name__ == "__main__":
     # Requires an OpenAI API key in the 'OPENAI_API_KEY' environment variable to run
     # temperature configures the randomness of the output
-    llm = OpenAI(temperature=0.9)
+    llm = OpenAI(temperature=0.9, api_key=OPENAI_API_KEY)
     prompt = PromptTemplate(
         input_variables=["image_desc"],
         template="Generate a detailed prompt to generate an image based on the following description: {image_desc}",

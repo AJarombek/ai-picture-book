@@ -1,9 +1,8 @@
 import os
 
 from dotenv import load_dotenv
-from langchain.chat_models import ChatOpenAI
-from langchain.schema import BaseMessage, HumanMessage, SystemMessage
-
+from langchain_community.chat_models import ChatOpenAI
+from langchain_core.messages import BaseMessage, HumanMessage, SystemMessage
 
 HELLO = "Bonjour!  Je m'appelle Andy.  Je suis un professeur de français."
 EXIT = "sortie"
