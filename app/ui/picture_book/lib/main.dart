@@ -95,7 +95,16 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        title: Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            widget.title,
+            style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold
+            )
+          ),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -120,7 +129,13 @@ class _HomeState extends State<Home> {
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
                     return Center(
-                      child: Text('Error: ${snapshot.error}'),
+                      child: SelectableText(
+                          'Error: ${snapshot.error}',
+                          style: const TextStyle(
+                              fontSize: 20,
+                              color: Colors.red
+                          )
+                      ),
                     );
                   }
 
@@ -129,7 +144,10 @@ class _HomeState extends State<Home> {
                   }
 
                   return Center(
-                    child: Text(snapshot.data ?? ''),
+                    child: SelectableText(
+                        snapshot.data ?? '',
+                        style: const TextStyle(fontSize: 18)
+                    ),
                   );
                 },
               ),
