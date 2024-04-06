@@ -131,6 +131,7 @@ class _HomeState extends State<Home> {
                     return Center(
                       child: SelectableText(
                           'Error: ${snapshot.error}',
+                          maxLines: null,
                           style: const TextStyle(
                               fontSize: 20,
                               color: Colors.red
@@ -143,9 +144,13 @@ class _HomeState extends State<Home> {
                     return const SizedBox.shrink();
                   }
 
-                  return Center(
+                  return Container(
+                    constraints: const BoxConstraints(
+                      maxHeight: 200,
+                    ),
                     child: SelectableText(
                         snapshot.data ?? '',
+                        maxLines: null,
                         style: const TextStyle(fontSize: 18)
                     ),
                   );
